@@ -221,3 +221,28 @@ footer {
 #btnIrCadastro:hover {
   color: #0056b3; /* Azul mais escuro no hover */
 }
+
+#modalCadastro .modal-content p {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Estilo do botão/link */
+#btnIrEntrar {
+  background: none;
+  border: none;
+  color: #007bff; /* Azul padrão links */
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0;
+  margin-left: 5px;
+  transition: color 0.3s ease;
+}
+
+#btnIrEntrar:hover {
+  color: #0056b3; /* Azul mais escuro no hover */
+}

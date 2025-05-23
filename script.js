@@ -1,4 +1,5 @@
 import { auth, db } from './firebase-config.js';
+import { signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 import {
   collection,
   query,
@@ -7,6 +8,11 @@ import {
   addDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+function senhaEhForte(senha) {
+  // Pelo menos 8 caracteres, 1 maiúscula, 1 minúscula, 1 número e 1 símbolo
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  return regex.test(senha);
+}
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -14,36 +20,104 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 
 window.addEventListener('DOMContentLoaded', () => {
-  // Botões header
-  const btnEntrar = document.getElementById('btnEntrar');
-  const btnCriarConta = document.getElementById('btnCriarConta');
-
-  const btnIrCadastro = document.getElementById('btnIrCadastro');
-
-  btnIrCadastro.addEventListener('click', () => {
-  // Esconde modal de login e abre modal de cadastro
-  modalLogin.style.display = 'none';
-  modalCadastro.style.display = 'flex';
-  });
-
-  // Modais
   const modalLogin = document.getElementById('modalLogin');
   const modalCadastro = document.getElementById('modalCadastro');
   const reservaModal = document.getElementById('reservaModal');
-
-  // Botões fechar dos modais
-  const btnFecharLogin = document.getElementById('btnFecharLogin');
-  const btnFecharCadastro = document.getElementById('btnFecharCadastro');
   const btnFecharReserva = reservaModal.querySelector('.btn-fechar');
+  const btnEntrar = document.getElementById('btnEntrar');
+  const btnCriarConta = document.getElementById('btnCriarConta');
+  const btnSair = document.getElementById('btnSair');
+  const perfil = document.getElementById('perfil');
 
-  // Abrir Login
+  const btnEntrarLogin = document.getElementById('btnEntrarLogin');
+
+  // Cadastro (exemplo básico, mantém sua validação de senha)
+  const btnCadastrar = document.getElementById('btnCadastrar');
+  btnCadastrar.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('emailCadastro').value.trim();
+    const senha = document.getElementById('senhaCadastro').value;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, senha);
+      alert('Login realizado com sucesso!');
+      modalLogin.style.display = 'none';
+      // O onAuthStateChanged já vai atualizar a UI automaticamente
+    } catch (error) {
+      // Verifica erros específicos para mensagem melhor
+      if (error.code === 'auth/wrong-password') {
+        alert('Senha incorreta. Tente novamente.');
+      } else if (error.code === 'auth/user-not-found') {
+        alert('Usuário não encontrado. Verifique o email.');
+      } else if (error.code === 'auth/invalid-email') {
+        alert('Email inválido.');
+      } else {
+        alert('Erro ao fazer login: ' + error.message);
+      }
+
+    // Sua função senhaEhForte permanece aqui...
+    if (!senhaEhForte(senha)) {
+      alert("Senha fraca.");
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, senha);
+      alert("Conta criada com sucesso!");
+      modalCadastro.style.display = 'none';
+      modalLogin.style.display = 'flex';
+    } catch (error) {
+      alert("Erro ao criar conta: " + error.message);
+    }
+    }
+  });
+
+  // Botão sair
+  btnSair.addEventListener('click', async () => {
+    try {
+      await auth.signOut();
+      alert("Você saiu da conta.");
+    } catch (error) {
+      alert("Erro ao sair: " + error.message);
+    }
+  });
+
+  // Ícone perfil clicável
+  perfil.addEventListener('click', () => {
+    alert("Aqui você pode abrir o menu do perfil.");
+  });
+
+  // Atualizar UI conforme estado do usuário
+  onAuthStateChanged(auth, (user) => {
+    console.log("Estado do usuário mudou:", user);
+
+    if (user) {
+      // Logado
+      btnEntrar.style.display = 'none';
+      btnCriarConta.style.display = 'none';
+      btnSair.style.display = 'inline-block';
+      perfil.style.display = 'inline-block';
+
+      // Opcional: fechar modais login/cadastro ao logar
+      modalLogin.style.display = 'none';
+      modalCadastro.style.display = 'none';
+
+    } else {
+      // Deslogado
+      btnEntrar.style.display = 'inline-block';
+      btnCriarConta.style.display = 'inline-block';
+      btnSair.style.display = 'none';
+      perfil.style.display = 'none';
+    }
+  });
+
+  // Botões abrir modais de login/cadastro
   btnEntrar.addEventListener('click', () => {
     modalLogin.style.display = 'flex';
     modalCadastro.style.display = 'none';
     reservaModal.style.display = 'none';
   });
 
-  // Abrir Cadastro
   btnCriarConta.addEventListener('click', () => {
     modalCadastro.style.display = 'flex';
     modalLogin.style.display = 'none';
@@ -67,7 +141,36 @@ window.addEventListener('DOMContentLoaded', () => {
 
 let usuarioLogado = null;
 onAuthStateChanged(auth, (user) => {
+   console.log("Estado do usuário mudou:", user);
   usuarioLogado = user;
+});
+
+
+  if (user) {
+    // Usuário está logado
+    btnEntrar.style.display = 'none';
+    btnCriarConta.style.display = 'none';
+    btnSair.style.display = 'inline-block';
+    perfil.style.display = 'inline-block';
+  } else {
+    // Usuário não está logado
+    btnEntrar.style.display = 'inline-block';
+    btnCriarConta.style.display = 'inline-block';
+    btnSair.style.display = 'none';
+    perfil.style.display = 'none';
+  }
+
+btnSair.addEventListener('click', async () => {
+  try {
+    await auth.signOut();
+    alert("Você saiu da conta.");
+    // Aqui o onAuthStateChanged será disparado e a UI atualizada
+  } catch (error) {
+    alert("Erro ao sair: " + error.message);
+  }
+});
+perfil.addEventListener('click', () => {
+  alert("Aqui você pode abrir um menu ou página de perfil.");
 });
 
 document.querySelectorAll('.btn').forEach(btn => {

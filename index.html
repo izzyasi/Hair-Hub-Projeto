@@ -16,7 +16,11 @@
         <a href="#">Contato</a>
         <button id="btnEntrar">Entrar</button>
         <button id="btnCriarConta">Criar Conta</button>
-      </nav>
+            <button id="btnSair" style="display:none;">Sair</button>
+  <div id="perfil" style="display:none; cursor:pointer;">
+    <img src="imagens/perfil-icon.jpg" alt="Perfil" width="32" height="32" />
+  </div>
+</nav>
     </header>
 
     <section class="hero">
@@ -91,9 +95,9 @@
       <button id="btnFecharLogin" class="btn-fechar">&times;</button>
       <h2>Entrar</h2>
       <form id="formLogin">
-        <input type="email" id="emailLogin" placeholder="Email" required />
-        <input type="password" id="senhaLogin" placeholder="Senha" required />
-        <button type="submit">Entrar</button>
+         <input id="emailLogin" type="email" placeholder="Email" required />
+         <input id="senhaLogin" type="password" placeholder="Senha" required />
+        <button id="btnEntrarLogin" type="submit">Entrar</button>
         <p>Não possui conta? <button id="btnIrCadastro" type="button">Crie sua conta</button></p>
       </form>
     </div>
@@ -107,8 +111,8 @@
         <input type="text" id="nome" placeholder="Nome" required />
         <input type="email" id="emailCadastro" placeholder="Email" required />
         <input type="password" id="senhaCadastro" placeholder="Senha" required />
-        <button type="submit">Criar Conta</button>
-        <p>Já possui cadastro? <button id="btnIrEntrar" type="button" style=>Entre na sua conta!</button></p>
+        <button id="btnCadastrar" type="submit">Criar Conta</button>
+        <p>Já possui cadastro? <button id="btnIrEntrar" type="button" style=>Entrar</button></p>
       </form>
     </div>
   </div>
