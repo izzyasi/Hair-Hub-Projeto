@@ -86,7 +86,6 @@
     </footer>
   </div>
 
-  <!-- Modal Login -->
   <div id="modalLogin" class="modal" style="display:none;">
     <div class="modal-content">
       <button id="btnFecharLogin" class="btn-fechar">&times;</button>
@@ -95,11 +94,11 @@
         <input type="email" id="emailLogin" placeholder="Email" required />
         <input type="password" id="senhaLogin" placeholder="Senha" required />
         <button type="submit">Entrar</button>
+        <p>Não possui conta? <button id="btnIrCadastro" type="button">Crie sua conta</button></p>
       </form>
     </div>
   </div>
 
-  <!-- Modal Cadastro -->
   <div id="modalCadastro" class="modal" style="display:none;">
     <div class="modal-content">
       <button id="btnFecharCadastro" class="btn-fechar">&times;</button>
@@ -109,11 +108,11 @@
         <input type="email" id="emailCadastro" placeholder="Email" required />
         <input type="password" id="senhaCadastro" placeholder="Senha" required />
         <button type="submit">Criar Conta</button>
+        <p>Já possui cadastro? <button id="btnIrEntrar" type="button" style=>Entre na sua conta!</button></p>
       </form>
     </div>
   </div>
 
-  <!-- Modal Reserva -->
   <div id="reservaModal" class="modal" style="display: none;">
     <div class="modal-content">
       <button class="btn-fechar close">&times;</button>
@@ -128,7 +127,6 @@
       <button id="confirmarReserva">Confirmar Reserva</button>
     </div>
   </div>
-
   <script src="script.js" type="module"></script>
 </body>
 </html>

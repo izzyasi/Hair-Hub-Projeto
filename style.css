@@ -127,7 +127,6 @@ nav a:hover {
   color: #e67e22;
 }
 
-/* Footer */
 footer {
   text-align: center;
   padding: 15px;
@@ -135,8 +134,6 @@ footer {
   color: #777;
   border-top: 1px solid #ddd;
 }
-
-/* Modais */
 
 .modal {
   position: fixed;
@@ -171,9 +168,6 @@ footer {
   color: #333;
 }
 
-
-/* Inputs e selects dentro dos modais */
-
 .modal-content input,
 .modal-content select {
   width: 100%;
@@ -200,4 +194,30 @@ footer {
 .modal-content button[type="submit"]:hover,
 #confirmarReserva:hover {
   background: #cf711c;
+}
+
+/* Container do texto com o botão/link */
+#modalLogin .modal-content p {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Estilo do botão/link */
+#btnIrCadastro {
+  background: none;
+  border: none;
+  color: #007bff; /* Azul padrão links */
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0;
+  margin-left: 5px;
+  transition: color 0.3s ease;
+}
+
+#btnIrCadastro:hover {
+  color: #0056b3; /* Azul mais escuro no hover */
 }
