@@ -145,12 +145,10 @@ window.addEventListener('DOMContentLoaded', () => {
         reservaModal.style.display = 'none';
         return;
       }
-    });
       reservaModal.style.display = 'flex';
       modalLogin.style.display = 'none';
       modalCadastro.style.display = 'none';
-
-
+});
       const confirmarReserva = document.getElementById('confirmarReserva');
 
 confirmarReserva.addEventListener('click', async () => {
