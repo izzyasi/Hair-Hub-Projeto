@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hair Hub</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Hair Hub</h1>
+      <nav>
+        <a href="#">Serviços</a>
+        <a href="#">Avaliações</a>
+        <a href="#">Contato</a>
+        <button id="btnEntrar">Entrar</button>
+        <button id="btnCriarConta">Criar Conta</button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h2>Hair Hub</h2>
+      <p>Barbearia onde o estilo fala por você!</p>
+    </section>
+
+    <section class="section">
+      <h3>Nossos Serviços</h3>
+      <div class="services">
+        <div class="card">
+          <img src="imagens/corte.jpg" alt="Corte" />
+          <h4>Corte de Cabelo - R$55</h4>
+          <a class="btn" href="#">Reservar</a>
+        </div>
+        <div class="card">
+          <img src="imagens/luzes.jpg" alt="Luzes" />
+          <h4>Luzes - R$120</h4>
+          <a class="btn" href="#">Reservar</a>
+        </div>
+        <div class="card">
+          <img src="imagens/coloracao.jpg" alt="Coloração" />
+          <h4>Coloração - R$90</h4>
+          <a class="btn" href="#">Reservar</a>
+        </div>
+        <div class="card">
+          <img src="imagens/barba.jpg" alt="Barba" />
+          <h4>Barba - R$45</h4>
+          <a class="btn" href="#">Reservar</a>
+        </div>
+        <div class="card">
+          <img src="imagens/pezinho.jpg" alt="Pézinho" />
+          <h4>Pézinho - R$25</h4>
+          <a class="btn" href="#">Reservar</a>
+        </div>
+        <div class="card">
+          <img src="imagens/sobrancelha.jpg" alt="Sobrancelha" />
+          <h4>Sobrancelha - R$30</h4>
+          <a class="btn" href="#">Reservar</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h3>Últimas Avaliações</h3>
+      <div class="reviews">
+        <div class="review">
+          <p>
+            "Virei cliente fixo. Atendimento de qualidade e profissionais muito
+            bem preparados. Recomendo!"
+          </p>
+          <span>Gabriel Souza - ★★★★★</span>
+        </div>
+        <div class="review">
+          <p>Top demais! Ambiente agradável e serviço impecável!</p>
+          <span>Ricardo Oliveira - ★★★★★</span>
+        </div>
+        <div class="review">
+          <p>A melhor da região, não troco por nada!</p>
+          <span>Lucas Andrade - ★★★★★</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 Hair Hub. Todos os direitos reservados.</p>
+    </footer>
+  </div>
+
+  <!-- Modal Login -->
+  <div id="modalLogin" class="modal" style="display:none;">
+    <div class="modal-content">
+      <button id="btnFecharLogin" class="btn-fechar">&times;</button>
+      <h2>Entrar</h2>
+      <form id="formLogin">
+        <input type="email" id="emailLogin" placeholder="Email" required />
+        <input type="password" id="senhaLogin" placeholder="Senha" required />
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Cadastro -->
+  <div id="modalCadastro" class="modal" style="display:none;">
+    <div class="modal-content">
+      <button id="btnFecharCadastro" class="btn-fechar">&times;</button>
+      <h2>Criar Conta</h2>
+      <form id="formCadastro">
+        <input type="text" id="nome" placeholder="Nome" required />
+        <input type="email" id="emailCadastro" placeholder="Email" required />
+        <input type="password" id="senhaCadastro" placeholder="Senha" required />
+        <button type="submit">Criar Conta</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Reserva -->
+  <div id="reservaModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <button class="btn-fechar close">&times;</button>
+      <h2>Reservar Horário</h2>
+      <p id="servicoSelecionado" style="font-weight: bold; font-size: 1.2em; margin-bottom: 10px;"></p>
+      <label for="data">Escolha o dia:</label>
+      <input type="date" id="data" />
+
+      <label for="horario">Escolha o horário:</label>
+      <select id="horario"></select>
+
+      <button id="confirmarReserva">Confirmar Reserva</button>
+    </div>
+  </div>
+
+  <script src="script.js" type="module"></script>
+</body>
+</html>
