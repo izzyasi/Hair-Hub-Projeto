@@ -18,7 +18,7 @@
         <button id="btnCriarConta">Criar Conta</button>
             <button id="btnSair" style="display:none;">Sair</button>
   <div id="perfil" style="display:none; cursor:pointer;">
-    <img src="imagens/perfil-icon.jpg" alt="Perfil" width="32" height="32" />
+    <img src="imagens/icone.png" alt="Perfil" width="32" height="32" />
   </div>
 </nav>
     </header>
@@ -34,53 +34,52 @@
         <div class="card">
           <img src="imagens/corte.jpg" alt="Corte" />
           <h4>Corte de Cabelo - R$55</h4>
-          <a class="btn" href="#">Reservar</a>
+          <a class="btn reservar-btn" href="#" data-servico="Corte de Cabelo - R$55">Reservar</a>
         </div>
         <div class="card">
           <img src="imagens/luzes.jpg" alt="Luzes" />
           <h4>Luzes - R$120</h4>
-          <a class="btn" href="#">Reservar</a>
+          <a class="btn reservar-btn" href="#" data-servico="Luzes - R$120">Reservar</a>
         </div>
         <div class="card">
           <img src="imagens/coloracao.jpg" alt="Coloração" />
           <h4>Coloração - R$90</h4>
-          <a class="btn" href="#">Reservar</a>
+          <a class="btn reservar-btn" href="#" data-servico="Coloração - R$90">Reservar</a>
         </div>
         <div class="card">
           <img src="imagens/barba.jpg" alt="Barba" />
           <h4>Barba - R$45</h4>
-          <a class="btn" href="#">Reservar</a>
+          <a class="btn reservar-btn" href="#" data-servico="Barba - R$45">Reservar</a>
         </div>
         <div class="card">
           <img src="imagens/pezinho.jpg" alt="Pézinho" />
           <h4>Pézinho - R$25</h4>
-          <a class="btn" href="#">Reservar</a>
+          <a class="btn reservar-btn" href="#" data-servico="Pézinho - R$25">Reservar</a>
         </div>
         <div class="card">
           <img src="imagens/sobrancelha.jpg" alt="Sobrancelha" />
           <h4>Sobrancelha - R$25</h4>
-          <a class="btn" href="#">Reservar</a>
+          <a class="btn reservar-btn" href="#" data-servico="Sobrancelha - R$25">Reservar</a>
         </div>
-      
         <div class="card">
           <img src="imagens/massagemcapilar.jpg" alt="Massagem" />
           <h4>Massagem capilar - R$30</h4>
-          <a class="btn" href="#">Reservar</a>
+          <a class="btn reservar-btn" href="#" data-servico="Massagem Capilar - R$30">Reservar</a>
         </div>
         <div class="card">
           <img src="imagens/hidratacao.jpg" alt="Hidratação" />
-          <h4> Hidratação - R$35</h4>
-          <a class="btn" href="#">Reservar</a>
+          <h4> Hidratação - R$40</h4>
+          <a class="btn reservar-btn" href="#" data-servico="Hidratação - R$40">Reservar</a>
         </div>
         <div class="card">
           <img src="imagens/progressiva.jpg" alt="Progressiva" />
           <h4>Progressiva - R$70</h4>
-          <a class="btn" href="#">Reservar</a>
+          <a class="btn reservar-btn" href="#" data-servico="Progressiva - R$70">Reservar</a>
         </div>
         <div class="card">
           <img src="imagens/permanentecacheado.jpg" alt="Permanente" />
           <h4>Permanente Cacheado - R$95</h4>
-          <a class="btn" href="#">Reservar</a>
+          <a class="btn reservar-btn" href="#" data-servico="Permanente Cacheado - R$95">Reservar</a>
         </div>
       </div>
     </section>
@@ -152,6 +151,17 @@
       <button id="confirmarReserva">Confirmar Reserva</button>
     </div>
   </div>
+  <div id="perfilModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <button class="btn-fechar closePerfil">&times;</button>
+    <h2>Minhas Reservas</h2>
+    <div id="listaReservas">
+      <p>Carregando reservas...</p>
+    </div>
+  </div>
+</div>
+<div id="notificacao" class="notificacao" style="display:none;"></div>
+<p id="servicoSelecionado" style="margin-top: 20px; font-weight: bold;"></p>
   <script src="script.js" type="module"></script>
 </body>
 </html>

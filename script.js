@@ -6,7 +6,9 @@ import {
   where,
   getDocs,
   addDoc,
-  serverTimestamp
+  serverTimestamp,
+  deleteDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 import {
@@ -31,25 +33,49 @@ window.addEventListener('DOMContentLoaded', () => {
   const btnCriarConta = document.getElementById('btnCriarConta');
   const btnSair = document.getElementById('btnSair');
   const perfil = document.getElementById('perfil');
-
+  const perfilModal = document.getElementById('perfilModal');
+  const listaReservas = document.getElementById('listaReservas');
+  const btnFecharPerfil = document.querySelector('.closePerfil');
   const btnCadastrar = document.getElementById('btnCadastrar');
+
+  const botoesReservar = document.querySelectorAll('.reservar-btn');
+const servicoSelecionado = document.getElementById('servicoSelecionado');
+
+botoesReservar.forEach(botao => {
+  botao.addEventListener('click', (event) => {
+    event.preventDefault();
+    const servico = botao.dataset.servico;
+    servicoSelecionado.textContent = `Serviço selecionado: ${servico}`;
+  });
+});
+
+  function mostrarNotificacao(mensagem, tempo = 3000) {
+  const notificacao = document.getElementById("notificacao");
+  notificacao.textContent = mensagem;
+  notificacao.style.display = "block";
+
+  setTimeout(() => {
+    notificacao.style.display = "none";
+  }, tempo);
+}
+
   btnCadastrar.addEventListener('click', async (e) => {
     e.preventDefault();
     const email = document.getElementById('emailCadastro').value.trim();
     const senha = document.getElementById('senhaCadastro').value;
 
     if (!senhaEhForte(senha)) {
-      alert("Senha fraca.");
+      mostrarNotificacao("Senha fraca.");
       return;
     }
 
     try {
       await createUserWithEmailAndPassword(auth, email, senha);
-      alert("Conta criada com sucesso!");
+      mostrarNotificacao("Conta criada com sucesso!");
       modalCadastro.style.display = 'none';
       modalLogin.style.display = 'flex';
     } catch (error) {
-      alert("Erro ao criar conta: " + error.message);
+      mostrarNotificacao("Erro ao criar conta: " + error.message);
     }
   });
 
@@ -61,17 +87,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, senha);
-      alert('Login realizado com sucesso!');
+      mostrarNotificacao('Login realizado com sucesso!');
       modalLogin.style.display = 'none';
     } catch (error) {
       if (error.code === 'auth/wrong-password') {
-        alert('Senha incorreta. Tente novamente.');
+        mostrarNotificacao('Senha incorreta. Tente novamente.');
       } else if (error.code === 'auth/user-not-found') {
-        alert('Usuário não encontrado. Verifique o email.');
+        mostrarNotificacao('Usuário não encontrado. Verifique o email.');
       } else if (error.code === 'auth/invalid-email') {
-        alert('Email inválido.');
+        mostrarNotificacao('Email inválido.');
       } else {
-        alert('Erro ao fazer login: ' + error.message);
+        mostrarNotificacao('Erro ao fazer login: ' + error.message);
       }
     }
   });
@@ -79,15 +105,72 @@ window.addEventListener('DOMContentLoaded', () => {
   btnSair.addEventListener('click', async () => {
     try {
       await auth.signOut();
-      alert("Você saiu da conta.");
+      mostrarNotificacao("Você saiu da conta.");
     } catch (error) {
-      alert("Erro ao sair: " + error.message);
+      mostrarNotificacao("Erro ao sair: " + error.message);
     }
   });
 
-  perfil.addEventListener('click', () => {
-    alert("Aqui você pode abrir o menu do perfil.");
-  });
+
+  perfil.addEventListener('click', async () => {
+  if (!usuarioLogado) {
+    mostrarNotificacao("Você precisa estar logado.");
+    return;
+  }
+
+  perfilModal.style.display = 'flex';
+  listaReservas.innerHTML = ''; // ✅ Limpa antes de adicionar
+
+  try {
+    const q = query(collection(db, "reservas"), where("uid", "==", usuarioLogado.uid));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      listaReservas.innerHTML = "<p>Você ainda não fez nenhuma reserva.</p>";
+      return;
+    }
+
+    querySnapshot.forEach(doc => {
+      const reserva = doc.data();
+      const div = document.createElement('div');
+      div.classList.add('reserva-item');
+      div.setAttribute('data-id', doc.id);
+      div.innerHTML = `
+        <p><strong>Serviço:</strong> ${reserva.servico}</p>
+        <p><strong>Data:</strong> ${reserva.data} - <strong>Horário:</strong> ${reserva.horario}</p>
+        <button class="cancelarReserva" style="margin-top:5px;" data-id="${doc.id}">Cancelar</button>
+      `;
+      listaReservas.appendChild(div);
+    });
+
+    document.querySelectorAll('.cancelarReserva').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const id = e.target.getAttribute('data-id');
+        const confirmar = confirm("Tem certeza que deseja cancelar esta reserva?");
+        if (!confirmar) return;
+
+        try {
+          await deleteDoc(doc(db, "reservas", id));
+          mostrarNotificacao("Reserva cancelada com sucesso.");
+          document.querySelector(`[data-id="${id}"]`).remove();
+        } catch (error) {
+          console.error("Erro ao cancelar reserva:", error);
+          mostrarNotificacao("Erro ao cancelar a reserva. Tente novamente.");
+        }
+      });
+    });
+
+  } catch (error) {
+    mostrarNotificacao("Erro ao carregar suas reservas.");
+    console.error(error);
+  }
+});
+
+btnFecharPerfil.addEventListener('click', () => {
+  perfilModal.style.display = 'none';
+  if (e.target === perfilModal) perfilModal.style.display = 'none';
+});
+
 
   onAuthStateChanged(auth, (user) => {
     console.log("Estado do usuário mudou:", user);
@@ -139,7 +222,7 @@ window.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
 
       if (!usuarioLogado) {
-        alert("Você precisa estar logado para fazer uma reserva.");
+        mostrarNotificacao("Você precisa estar logado para fazer uma reserva.");
         modalLogin.style.display = 'flex';
         modalCadastro.style.display = 'none';
         reservaModal.style.display = 'none';
@@ -149,21 +232,22 @@ window.addEventListener('DOMContentLoaded', () => {
       modalLogin.style.display = 'none';
       modalCadastro.style.display = 'none';
 });
-      const confirmarReserva = document.getElementById('confirmarReserva');
+});
+
+const confirmarReserva = document.getElementById('confirmarReserva');
 
 confirmarReserva.addEventListener('click', async () => {
   if (!usuarioLogado) {
-    alert("Você precisa estar logado para confirmar a reserva.");
+    mostrarNotificacao("Você precisa estar logado para confirmar a reserva.");
     return;
   }
 
   const servico = document.getElementById('servicoSelecionado').textContent;
-  document.getElementById('data').value = '';
-      const selectHorario = document.getElementById('horario');
-      selectHorario.innerHTML = '';
+   const data = document.getElementById('data').value;
+  const horario = document.getElementById('horario').value;
 
   if (!data || !horario) {
-    alert("Por favor, selecione a data e o horário.");
+    mostrarNotificacao("Por favor, selecione a data e o horário.");
     return;
   }
 
@@ -176,18 +260,16 @@ confirmarReserva.addEventListener('click', async () => {
       horario,
       timestamp: serverTimestamp()
     });
-    alert("Reserva confirmada com sucesso!");
+    mostrarNotificacao("Reserva confirmada com sucesso!");
+
     document.getElementById('data').value = '';
     document.getElementById('horario').innerHTML = '';
     reservaModal.style.display = 'none';
-  } 
-  
-  catch (error) {
+  } catch (error) {
     console.error("Erro ao confirmar reserva: ", error);
-    alert("Erro ao confirmar a reserva. Tente novamente.");
+    mostrarNotificacao("Erro ao confirmar a reserva. Tente novamente.");
   }
 });
-    }); 
 
   window.addEventListener('click', (e) => {
     if (e.target === modalLogin) modalLogin.style.display = 'none';
@@ -198,20 +280,20 @@ confirmarReserva.addEventListener('click', async () => {
   const datePicker = document.getElementById('data');
   const timePicker = document.getElementById('horario');
 
-  const horarios = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+  const horarios = ['08:00', '09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
 
   const hoje = new Date().toISOString().split('T')[0];
   datePicker.min = hoje;
 
-  datePicker.addEventListener('input', async () => {
+  
+  datePicker.addEventListener('change', async () => {
     const dataSelecionada = datePicker.value;
-
     if (!dataSelecionada) return;
 
-    const diaDaSemana = new Date(dataSelecionada).getDay();
+    const diaDaSemana = new Date(dataSelecionada + 'T00:00:00').getDay();
 
     if (diaDaSemana === 1) {
-      alert("A barbearia não funciona às segundas-feiras.");
+      mostrarNotificacao("A barbearia não funciona às segundas-feiras.");
       datePicker.value = '';
       timePicker.innerHTML = '';
       return;
@@ -240,7 +322,7 @@ confirmarReserva.addEventListener('click', async () => {
       });
     } catch (error) {
       console.error("Erro ao buscar reservas:", error);
-      alert("Erro ao carregar horários. Tente novamente.");
+      mostrarNotificacao("Erro ao carregar horários. Tente novamente.");
     }
   });
 });

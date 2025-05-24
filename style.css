@@ -257,3 +257,18 @@ footer {
 #btnIrEntrar:hover {
   color: #0056b3; /* Azul mais escuro no hover */
 }
+
+.notificacao {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #323232;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 9999;
+  opacity: 0.95;
+  transition: opacity 0.5s ease;
+  max-width: 300px;
+}
