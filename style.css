@@ -1,4 +1,4 @@
-:root {
+ :root {
   --laranja: #f36f21;
   --laranja-escuro: #c4550e;
   --cinza-fundo: #f4f4f4;
@@ -8,6 +8,8 @@
   --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* geral*/
+
 * {
   margin: 0;
   padding: 0;
@@ -16,31 +18,31 @@
 }
 
 body {
-  background: var(--cinza-fundo);
+  background: #33302f;
   color: var(--cinza-escuro);
   min-height: 100vh;
-}
-
-.logo {
-  width: 60px;
-  display: block;
-  margin: 0;
-  filter: drop-shadow(0 0 10px var(--laranja));
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 20px var(--laranja-escuro));
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 20px;
+.notificacao {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--cinza-escuro);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: var(--sombra-suave);
+  z-index: 9999;
+  opacity: 0.95;
+  transition: opacity 0.5s ease;
+  max-width: 300px;
 }
+
+/* Header style */
 
 header {
   display: flex;
@@ -49,15 +51,46 @@ header {
   margin-bottom: 30px;
 }
 
-header h1 {
-  color: #2c3e50;
+.logo {
+  width: 60px;
+  display: block;
+  margin: 0;
+  margin-right: 25px;
+  margin-left: 10px;
+  filter: drop-shadow(0 0 10px var(--laranja));
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 20px var(--laranja-escuro));
+}
+
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.branding {
+  display: flex;
+  align-items: center;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-family: 'Playfair';
+  font-style: inherit;
+  font-weight: lighter;
+  color: #fffafa;
+  margin: 0;
 }
 
 nav a,
 nav button {
-  margin-left: 15px;
+  margin-left: 30px;
   text-decoration: none;
-  color: var(--cinza-escuro);
+  color: #F5F5F5;
+  font-family: 'Poppins', sans-serif;
   font-weight: bold;
   background: none;
   border: none;
@@ -70,21 +103,123 @@ nav a:hover {
   color: var(--laranja);
 }
 
-h3 {
-  margin-bottom: 20px;
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+#btnSair {
+  margin-left: 30px;
+  text-decoration: none;
+  color: #F5F5F5;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+#btnSair:hover {
+  color: var(--laranja);
+}
+
+/* Sobre nós seção */
+
 .hero {
-  background: #2c3e50;
+  background: #353334;
   color: white;
   padding: 40px;
   text-align: center;
   border-radius: 12px;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
+
+
+.sobre-nos {
+  background: #353334;
+  padding: 80px 20px;
+  font-family: 'Georgia', serif;
+  color: var(--cinza-escuro);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sobre-nos .container {
+  display: flex;
+  max-width: 1000px;
+  margin: 50px auto;
+  margin-top: 1px;
+  margin-bottom: 0;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid #353334;
+  background-color: #353334;
+}
+
+.sobre-nos h2 {
+  font-size: 2.3rem;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+  color: white;
+}
+
+.sobre-nos h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--laranja);
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+.sobre-nos p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-top: 20px;
+  color: white;
+}
+
+.image-box {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.image-box img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.text-box {
+  flex: 1;
+}
+
+.text-box h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.text-box p {
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+/* Seção serviços */
 
 .section {
   margin-bottom: 40px;
+}
+
+#servicos h3 {
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 .services {
@@ -101,13 +236,22 @@ h3 {
   height: 240px;
   padding: 15px;
   box-sizing: border-box;
-  background: var(--fundo-card);
+  background: #353334;
   border-radius: 10px;
   box-shadow: var(--sombra-suave);
   width: 160px;
   text-align: center;
   padding-bottom: 15px;
 }
+
+.card h4{
+  color: #F5F5F5;
+}
+
+.card:hover {
+  filter: drop-shadow(0 0 10px var(--laranja-escuro));
+}
+
 
 .card img {
   width: 100%;
@@ -126,7 +270,7 @@ h3 {
   margin-top: auto;
   display: inline-block;
   margin-bottom: 10px;
-  background: var(--laranja);
+  background: #e97744;
   color: white;
   padding: 8px 12px;
   border-radius: 6px;
@@ -136,8 +280,10 @@ h3 {
 }
 
 .card .btn:hover {
-  background: var(--laranja-escuro);
+  background: radial-gradient(circle at 50% 50%, #ffc012, #fddc49, #e98e44);
 }
+
+/* Seção avaliações */
 
 .reviews {
   display: flex;
@@ -162,13 +308,7 @@ h3 {
   color: var(--laranja);
 }
 
-footer {
-  text-align: center;
-  padding: 15px;
-  font-size: 0.9rem;
-  color: var(--cinza-claro);
-  border-top: 1px solid #ddd;
-}
+/* Seção modais */
 
 .modal {
   position: fixed;
@@ -259,69 +399,12 @@ footer {
   color: #0056b3;
 }
 
-.notificacao {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--cinza-escuro);
-  color: white;
-  padding: 15px 20px;
-  border-radius: 10px;
-  box-shadow: var(--sombra-suave);
-  z-index: 9999;
-  opacity: 0.95;
-  transition: opacity 0.5s ease;
-  max-width: 300px;
-}
-
-.sobre-nos {
-  background: linear-gradient(135deg, #fff8f4, #fdfdfd);
-  padding: 80px 20px;
-  font-family: 'Georgia', serif;
-  color: var(--cinza-escuro);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.sobre-nos .container {
-  max-width: 700px;
-  background: var(--fundo-card);
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: var(--sombra-suave);
-  text-align: center;
-}
-
-.sobre-nos h2 {
-  font-size: 2.8rem;
-  margin-bottom: 20px;
-  position: relative;
-  display: inline-block;
-  color: var(--cinza-escuro);
-}
-
-.sobre-nos h2::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 4px;
-  background: var(--laranja);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
-
-.sobre-nos p {
-  font-size: 1.2rem;
-  line-height: 1.8;
-  margin-top: 20px;
-  color: var(--cinza-claro);
-}
+/* Seção contato e local */
 
 .contato h2 {
   font-size: 2.8rem;
   margin-bottom: 20px;
-  color: var(--cinza-escuro);
+  color: #F5F5F5;
 }
 
 .contato p {
@@ -331,7 +414,7 @@ footer {
 }
 
 .contato {
-  background-color: var(--cinza-fundo);
+  background-color: #2C2C2C;
   padding: 60px 20px;
   font-family: 'Georgia', serif;
 }
@@ -380,4 +463,14 @@ footer {
 
 .form-contato button:hover {
   background: var(--laranja-escuro);
+}
+
+/* Footer style */
+
+footer {
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9rem;
+  color: var(--cinza-claro);
+  border-top: 1px solid #ddd;
 }
