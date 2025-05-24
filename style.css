@@ -12,8 +12,21 @@ body {
   min-height: 100vh;
 }
 
+.logo {
+    width: 60px;
+    display: block;
+    margin: 0;
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+.logo {
+    filter: drop-shadow(0 0 10px #c8a15e);
+}
+.logo:hover {
+    filter: drop-shadow(0 0 20px #c8a15e);
 }
 
 .container {
