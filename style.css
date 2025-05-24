@@ -1,32 +1,39 @@
+:root {
+  --laranja: #f36f21;
+  --laranja-escuro: #c4550e;
+  --cinza-fundo: #f4f4f4;
+  --cinza-escuro: #333;
+  --cinza-claro: #777;
+  --fundo-card: white;
+  --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-  background: #f4f4f4;
-  color: #333;
+  background: var(--cinza-fundo);
+  color: var(--cinza-escuro);
   min-height: 100vh;
 }
 
 .logo {
-    width: 60px;
-    display: block;
-    margin: 0;
+  width: 60px;
+  display: block;
+  margin: 0;
+  filter: drop-shadow(0 0 10px var(--laranja));
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 20px var(--laranja-escuro));
 }
 
 html {
   scroll-behavior: smooth;
-}
-
-.logo {
-    filter: drop-shadow(0 0 10px #c8a15e);
-}
-.logo:hover {
-    filter: drop-shadow(0 0 20px #c8a15e);
 }
 
 .container {
@@ -50,7 +57,7 @@ nav a,
 nav button {
   margin-left: 15px;
   text-decoration: none;
-  color: #2c3e50;
+  color: var(--cinza-escuro);
   font-weight: bold;
   background: none;
   border: none;
@@ -60,19 +67,19 @@ nav button {
 
 nav button:hover,
 nav a:hover {
-  color: #e67e22;
+  color: var(--laranja);
 }
 
 h3 {
-    margin-bottom: 20px; /* Ajuste o valor conforme necessário */
+  margin-bottom: 20px;
 }
 
 .hero {
   background: #2c3e50;
   color: white;
-  padding: 30px;
+  padding: 40px;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 50px;
 }
 
@@ -91,12 +98,12 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 240px; /* ou um valor padrão que funcione bem para todos */
+  height: 240px;
   padding: 15px;
   box-sizing: border-box;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  background: var(--fundo-card);
+  border-radius: 10px;
+  box-shadow: var(--sombra-suave);
   width: 160px;
   text-align: center;
   padding-bottom: 15px;
@@ -104,8 +111,8 @@ h3 {
 
 .card img {
   width: 100%;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   height: 100px;
   object-fit: cover;
 }
@@ -119,17 +126,17 @@ h3 {
   margin-top: auto;
   display: inline-block;
   margin-bottom: 10px;
-  background: #e67e22;
+  background: var(--laranja);
   color: white;
   padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   text-decoration: none;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
 .card .btn:hover {
-  background: #cf711c;
+  background: var(--laranja-escuro);
 }
 
 .reviews {
@@ -139,10 +146,10 @@ h3 {
 }
 
 .review {
-  background: white;
+  background: var(--fundo-card);
   padding: 15px;
-  border-radius: 6px;
-  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  box-shadow: var(--sombra-suave);
 }
 
 .review p {
@@ -152,14 +159,14 @@ h3 {
 
 .review span {
   font-weight: bold;
-  color: #e67e22;
+  color: var(--laranja);
 }
 
 footer {
   text-align: center;
   padding: 15px;
   font-size: 0.9rem;
-  color: #777;
+  color: var(--cinza-claro);
   border-top: 1px solid #ddd;
 }
 
@@ -177,12 +184,13 @@ footer {
 }
 
 .modal-content {
-  background: white;
+  background: var(--fundo-card);
   padding: 20px 30px;
-  border-radius: 8px;
+  border-radius: 10px;
   width: 320px;
   max-width: 90%;
   position: relative;
+  box-shadow: var(--sombra-suave);
 }
 
 .btn-fechar {
@@ -193,7 +201,7 @@ footer {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #333;
+  color: var(--cinza-escuro);
 }
 
 .modal-content input,
@@ -201,19 +209,19 @@ footer {
   width: 100%;
   padding: 8px 10px;
   margin: 10px 0 20px 0;
-  border-radius: 4px;
+  border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
 }
 
 .modal-content button[type="submit"],
 #confirmarReserva {
-  background: #e67e22;
+  background: var(--laranja);
   border: none;
   color: white;
   padding: 10px;
   width: 100%;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
   transition: background 0.3s ease;
@@ -221,35 +229,10 @@ footer {
 
 .modal-content button[type="submit"]:hover,
 #confirmarReserva:hover {
-  background: #cf711c;
+  background: var(--laranja-escuro);
 }
 
-/* Container do texto com o botão/link */
-#modalLogin .modal-content p {
-  text-align: center;
-  margin-top: 15px;
-  font-size: 1rem;
-  color: #444;
-}
-
-/* Estilo do botão/link */
-#btnIrCadastro {
-  background: none;
-  border: none;
-  color: #007bff; /* Azul padrão links */
-  cursor: pointer;
-  text-decoration: underline;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 0;
-  margin-left: 5px;
-  transition: color 0.3s ease;
-}
-
-#btnIrCadastro:hover {
-  color: #0056b3; /* Azul mais escuro no hover */
-}
-
+#modalLogin .modal-content p,
 #modalCadastro .modal-content p {
   text-align: center;
   margin-top: 15px;
@@ -257,11 +240,11 @@ footer {
   color: #444;
 }
 
-/* Estilo do botão/link */
+#btnIrCadastro,
 #btnIrEntrar {
   background: none;
   border: none;
-  color: #007bff; /* Azul padrão links */
+  color: #007bff;
   cursor: pointer;
   text-decoration: underline;
   font-weight: 600;
@@ -271,19 +254,20 @@ footer {
   transition: color 0.3s ease;
 }
 
+#btnIrCadastro:hover,
 #btnIrEntrar:hover {
-  color: #0056b3; /* Azul mais escuro no hover */
+  color: #0056b3;
 }
 
 .notificacao {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: #323232;
+  background: var(--cinza-escuro);
   color: white;
   padding: 15px 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  box-shadow: var(--sombra-suave);
   z-index: 9999;
   opacity: 0.95;
   transition: opacity 0.5s ease;
@@ -291,32 +275,63 @@ footer {
 }
 
 .sobre-nos {
-  background-color: #f8f8f8;
-  padding: 60px 20px;
+  background: linear-gradient(135deg, #fff8f4, #fdfdfd);
+  padding: 80px 20px;
   font-family: 'Georgia', serif;
-  color: #333;
+  color: var(--cinza-escuro);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sobre-nos .container {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 700px;
+  background: var(--fundo-card);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: var(--sombra-suave);
   text-align: center;
 }
 
 .sobre-nos h2 {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   margin-bottom: 20px;
-  color: #222;
+  position: relative;
+  display: inline-block;
+  color: var(--cinza-escuro);
+}
+
+.sobre-nos h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--laranja);
+  margin: 12px auto 0;
+  border-radius: 2px;
 }
 
 .sobre-nos p {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-top: 20px;
+  color: var(--cinza-claro);
+}
+
+.contato h2 {
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+  color: var(--cinza-escuro);
+}
+
+.contato p {
+  font-size: 1.2rem;
   line-height: 1.8;
   margin-bottom: 20px;
 }
 
 .contato {
-  background-color: #f4f4f4;
+  background-color: var(--cinza-fundo);
   padding: 60px 20px;
   font-family: 'Georgia', serif;
 }
@@ -324,13 +339,6 @@ footer {
 .contato .container {
   max-width: 1000px;
   margin: 0 auto;
-}
-
-.contato h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-  color: #222;
 }
 
 .contato-conteudo {
@@ -360,15 +368,16 @@ footer {
 }
 
 .form-contato button {
-  background-color: #222;
+  background: var(--laranja);
   color: #fff;
   border: none;
   padding: 12px;
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease;
+  border-radius: 6px;
 }
 
 .form-contato button:hover {
-  background-color: #444;
+  background: var(--laranja-escuro);
 }
