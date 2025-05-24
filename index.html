@@ -11,10 +11,10 @@
     <header>
       <h1>Hair Hub</h1>
       <nav>
-        <a href="#">Sobre Nós</a>
-        <a href="#">Serviços</a>
-        <a href="#">Avaliações</a>
-        <a href="#">Contato</a>
+        <a href="#sobre">Sobre Nós</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#avaliacoes">Avaliações</a>
+        <a href="#contato">Contato</a>
         <button id="btnEntrar">Entrar</button>
         <button id="btnCriarConta">Criar Conta</button>
             <button id="btnSair" style="display:none;">Sair</button>
@@ -45,7 +45,7 @@
 </section>
 
 
-    <section class="section">
+    <section id="servicos" class="section">
       <h3>Nossos Serviços</h3>
       <div class="services">
         <div class="card">
@@ -101,7 +101,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section id="avaliacoes" class="section">
       <h3>Últimas Avaliações</h3>
       <div class="reviews">
         <div class="review">
@@ -121,12 +121,7 @@
         </div>
       </div>
     </section>
-
-    <footer>
-      <p>© 2025 Hair Hub. Todos os direitos reservados.</p>
-    </footer>
   </div>
-
   <div id="modalLogin" class="modal" style="display:none;">
     <div class="modal-content">
       <button id="btnFecharLogin" class="btn-fechar">&times;</button>
@@ -139,7 +134,6 @@
       </form>
     </div>
   </div>
-
   <div id="modalCadastro" class="modal" style="display:none;">
     <div class="modal-content">
       <button id="btnFecharCadastro" class="btn-fechar">&times;</button>
@@ -203,5 +197,8 @@
 </section>
 <div id="notificacao" class="notificacao" style="display:none;"></div>
   <script src="script.js" type="module"></script>
+  <footer>
+      <p>© 2025 Hair Hub. Todos os direitos reservados.</p>
+    </footer>
 </body>
 </html>
