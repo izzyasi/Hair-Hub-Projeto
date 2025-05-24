@@ -325,4 +325,29 @@ confirmarReserva.addEventListener('click', async () => {
       mostrarNotificacao("Erro ao carregar horários. Tente novamente.");
     }
   });
+
+const form = document.getElementById('form-contato');
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  console.log('Form submit disparado!');
+
+  const nome = document.getElementById('nomemensagem').value;
+  const email = document.getElementById('emailmensagem').value;
+  const mensagem = document.getElementById('mensagem').value;
+
+  try {
+    await addDoc(collection(db, 'mensagens'), {
+      nome,
+      email,
+      mensagem,
+      data: new Date().toISOString()
+    });
+    alert('Mensagem enviada com sucesso!');
+    form.reset();
+  } catch (error) {
+    console.error('Erro ao enviar mensagem:', error);
+    alert('Erro ao enviar. Tente novamente.');
+  }
+});
 });
