@@ -330,7 +330,6 @@ const form = document.getElementById('form-contato');
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
-  console.log('Form submit disparado!');
 
   const nome = document.getElementById('nomemensagem').value;
   const email = document.getElementById('emailmensagem').value;
@@ -343,11 +342,11 @@ form.addEventListener('submit', async e => {
       mensagem,
       data: new Date().toISOString()
     });
-    alert('Mensagem enviada com sucesso!');
+    mostrarNotificacao('Mensagem enviada com sucesso!');
     form.reset();
   } catch (error) {
     console.error('Erro ao enviar mensagem:', error);
-    alert('Erro ao enviar. Tente novamente.');
+    mostrarNotificacao('Erro ao enviar. Tente novamente.');
   }
 });
 });
