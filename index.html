@@ -10,7 +10,7 @@
   <div class="container">
     <header>
       <div class="branding">
-      <img src="imagens\logo.png" alt="Hair Hub Logo" class="logo">
+      <img src="imagens/logo.png" alt="Hair Hub Logo" class="logo">
         <h1>Hair Hub</h1>
         </div>
       <nav class="menu">
@@ -22,21 +22,20 @@
         <button id="btnCriarConta">Criar Conta</button>
       </nav>
       <div class="perfil">
-      <button id="btnSair" style="display:none;">Sair</button>
+      <button id="btnSair">Sair</button>
   <div id="perfil" style="display:none; cursor:pointer;">
     <img src="imagens/icone.png" alt="Perfil" width="50" height="50" />
   </div>
   </div>
     </header>
-
+<main>
     <section class="hero">
       <div style="text-align: center; margin: 20px 0;">
     <img src="imagens\banner.jpeg" alt="Hair Hub - Barbearia" style="max-width: 100%; height: auto;">
      </div>
     </section>
-
     <section id="sobre" class="sobre-nos">
-  <div id="cont" class="container">
+  <div class="container">
     <div class="image-box">
       <img src="imagens/barbearia.jpg" alt="Barbearia Hair Hub" />
       </div>
@@ -51,8 +50,6 @@
     </div>
   </div>
 </section>
-
-
     <section id="servicos" class="section">
       <h3>Nossos Serviços</h3>
       <div class="services">
@@ -151,7 +148,7 @@
         <input type="email" id="emailCadastro" placeholder="Email" required />
         <input type="password" id="senhaCadastro" placeholder="Senha" required />
         <button id="btnCadastrar" type="submit">Criar Conta</button>
-        <p>Já possui cadastro? <button id="btnIrEntrar" type="button" style=>Entrar</button></p>
+        <p>Já possui cadastro? <button id="btnIrEntrar" type="button">Entrar</button></p>
       </form>
     </div>
   </div>
@@ -170,15 +167,23 @@
       <button id="confirmarReserva">Confirmar Reserva</button>
     </div>
   </div>
+  <div class="profile-menu" id="profileMenu">
+    <p id="userEmail"></p>
+</div>
   <div id="perfilModal" class="modal" style="display:none;">
   <div class="modal-content">
     <button class="btn-fechar closePerfil">&times;</button>
-    <h2>Minhas Reservas</h2>
-    <div id="listaReservas">
-      <p>Carregando reservas...</p>
+
+    <div class="abaPerfil" class="hidden">
+      <h2>Perfil</h2>
+      <p>Email: <span id="emailUsuario">a@a.com</span></p>
+    <button id="btnReservas">Reservas</button>
+    <button id="btnDeletar">Deletar Conta</button>
+    <div id="areaReservas"></div>
     </div>
   </div>
 </div>
+
 <section id="contato" class="contato">
   <div class="container">
     <h2>Contato</h2>
@@ -205,6 +210,7 @@
 </section>
 <div id="notificacao" class="notificacao" style="display:none;"></div>
   <script src="script.js" type="module"></script>
+</main>
   <footer>
       <p>© 2025 Hair Hub. Todos os direitos reservados.</p>
     </footer>
