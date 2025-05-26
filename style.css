@@ -110,7 +110,7 @@ nav a:hover {
 }
 
 .hidden {
-  display: none;
+  display: none !important; /* O !important pode ajudar a garantir que funcione */
 }
 
 #abaPerfil {

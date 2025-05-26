@@ -3,7 +3,10 @@ import { signOut,
   deleteUser,  
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+  onAuthStateChanged,
+  EmailAuthProvider,
+  reauthenticateWithCredential
+ } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 
 import {
   collection,
@@ -13,7 +16,8 @@ import {
   addDoc,
   serverTimestamp,
   deleteDoc,
-  doc
+  doc,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 // Função para verificar se a senha é forte
@@ -25,10 +29,10 @@ function senhaEhForte(senha) {
 window.addEventListener('DOMContentLoaded', () => {
   let usuarioLogado = null;  // Declarado no topo!
 
-  const abaPerfil = document.getElementById('abaPerfil');
+  //const abaPerfil = document.getElementById('abaPerfil');
   const btnReservas = document.getElementById('btnReservas');
   const areaReservas = document.getElementById('areaReservas');
-  const userEmail = document.getElementById('emailUsuario').textContent;
+  //const userEmail = document.getElementById('emailUsuario').textContent;
 
 
   const modalLogin = document.getElementById('modalLogin');
@@ -51,7 +55,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const btnIrEntrar = document.getElementById('btnIrEntrar');
   const btnEntrarLogin = document.getElementById('btnEntrarLogin');
   const confirmarReserva = document.getElementById('confirmarReserva');
-  const btnDeletarConta = document.getElementById('btnDeletarConta')
+  const btnDeletar = document.getElementById('btnDeletar')
 
   const form = document.getElementById('form-contato');
 
@@ -155,14 +159,32 @@ btnFecharCadastro.addEventListener('click', (e) => {
     }
   });
 
-// Botão de perfil
- perfil.addEventListener('click', async () => {
-  if (!usuarioLogado) return mostrarNotificacao("Você precisa estar logado.");
+  if (areaReservas) {
+    areaReservas.classList.add('hidden');
+  }
 
-  document.getElementById('userEmail').textContent = usuarioLogado.email;
-  perfilModal.style.display = 'flex';
-  await carregarReservas();
-});
+// Botão de perfil
+ perfil.addEventListener('click', () => { // Removido async pois carregarReservas foi movido
+    if (!usuarioLogado) {
+      mostrarNotificacao("Você precisa estar logado.");
+      return;
+    }
+
+  const emailUsuarioSpan = document.getElementById('emailUsuario');
+    if (emailUsuarioSpan) {
+      emailUsuarioSpan.textContent = usuarioLogado.email;
+    } else {
+      console.error("Elemento 'emailUsuario' não encontrado no modal de perfil!");
+    }
+
+    perfilModal.style.display = 'flex'; // Mostra o modal de perfil
+
+     if (areaReservas) {
+        areaReservas.classList.add('hidden'); // Garante que está escondida ao abrir o modal
+        areaReservas.innerHTML = ''; // Limpa conteúdo antigo, se houver
+    }
+  });
+
 
 btnFecharPerfil.addEventListener('click', () => {
   perfilModal.style.display = 'none';
@@ -172,37 +194,62 @@ btnFecharPerfil.addEventListener('click', () => {
 
 
  btnReservas.addEventListener('click', () => {
-  console.log("Botão Reservas clicado!");
-  areaReservas.classList.toggle('hidden');
-  carregarReservas();
-});
+    console.log("Botão Reservas clicado!");
+    if (!usuarioLogado) {
+      mostrarNotificacao("Erro: Usuário não está logado para carregar reservas.");
+      return;
+    }
+
+    if (areaReservas.classList.contains('hidden')) {
+      // Se estava escondida, carrega as reservas e mostra
+      carregarReservas(); // Chama a função para buscar e popular as reservas
+      areaReservas.classList.remove('hidden');
+    } else {
+      // Se estava visível, esconde
+      areaReservas.classList.add('hidden');
+    }
+  });
 
 async function carregarReservas() {
   console.log("Função carregarReservas chamada!");
+
+  // Adicionar verificação de usuarioLogado aqui também, por segurança
+  if (!usuarioLogado) {
+    areaReservas.innerHTML = 'Você precisa estar logado para ver suas reservas.';
+    console.log("carregarReservas: Tentativa de carregar sem usuário logado.");
+    if(!areaReservas.classList.contains('hidden')) areaReservas.classList.add('hidden');
+    return;
+  }
+
   areaReservas.innerHTML = 'Carregando...';
 
+  
   try {
     const reservasRef = collection(db, "reservas");
-    const q = query(reservasRef, where("email", "==", userEmail));
+    // CORREÇÃO: Usar o email do usuarioLogado dinamicamente
+    const q = query(reservasRef, where("email", "==", usuarioLogado.email));
 
     const querySnapshot = await getDocs(q);
 
-    console.log("Reservas encontradas:", querySnapshot.size);
-
-    areaReservas.innerHTML = '';
+    console.log("Reservas encontradas:", querySnapshot.size, "para o email:", usuarioLogado.email);
+    areaReservas.innerHTML = ''; // Limpa o "Carregando..."
 
     if (querySnapshot.empty) {
-      areaReservas.innerHTML = 'Nenhuma reserva encontrada.';
+      areaReservas.innerHTML = '<p>Nenhuma reserva encontrada.</p>';
     } else {
       querySnapshot.forEach(doc => {
         const r = doc.data();
-        const docId = doc.id;  // ID do documento no Firestore
+        const docId = doc.id;
 
         const divReserva = document.createElement('div');
         divReserva.style.marginBottom = '10px';
+        divReserva.style.padding = '10px';
+        divReserva.style.border = '1px solid #eee';
+        divReserva.style.borderRadius = '4px';
 
-        const texto = document.createElement('span');
-        texto.textContent = `${r.servico} - ${r.data} às ${r.horario} `;
+        const texto = document.createElement('p'); // Usar <p> pode ser melhor para texto
+        texto.textContent = `Serviço: ${r.servico} - Data: ${r.data} às ${r.horario}`;
+        texto.style.margin = '0 0 10px 0';
 
         const btnCancelar = document.createElement('button');
         btnCancelar.textContent = 'Cancelar';
@@ -210,10 +257,10 @@ async function carregarReservas() {
         btnCancelar.style.color = 'white';
         btnCancelar.style.backgroundColor = 'red';
         btnCancelar.style.border = 'none';
-        btnCancelar.style.padding = '5px';
+        btnCancelar.style.padding = '5px 10px';
         btnCancelar.style.cursor = 'pointer';
+        btnCancelar.style.borderRadius = '3px';
 
-        // Evento de cancelar
         btnCancelar.addEventListener('click', async () => {
           const confirmar = confirm('Tem certeza que deseja cancelar esta reserva?');
           if (confirmar) {
@@ -223,163 +270,160 @@ async function carregarReservas() {
 
         divReserva.appendChild(texto);
         divReserva.appendChild(btnCancelar);
-
         areaReservas.appendChild(divReserva);
       });
     }
   } catch (error) {
     console.error("Erro ao carregar reservas:", error);
-    areaReservas.innerHTML = 'Erro ao carregar reservas.';
+    areaReservas.innerHTML = '<p>Erro ao carregar reservas. Tente novamente.</p>';
   }
 }
 
 async function cancelarReserva(idReserva) {
-  try {
-    await deleteDoc(doc(db, "reservas", idReserva));
-    console.log(`Reserva ${idReserva} cancelada com sucesso.`);
-    alert('Reserva cancelada com sucesso!');
-    carregarReservas();  // Recarrega a lista após cancelar
-  } catch (error) {
-    console.error("Erro ao cancelar reserva:", error);
-    alert('Erro ao cancelar reserva.');
+    try {
+      await deleteDoc(doc(db, "reservas", idReserva));
+      console.log(`Reserva ${idReserva} cancelada com sucesso.`);
+      mostrarNotificacao('Reserva cancelada com sucesso!', 2000); // Usei sua função mostrarNotificacao
+      await carregarReservas(); // Recarrega a lista após cancelar
+    } catch (error) {
+      console.error("Erro ao cancelar reserva:", error);
+      mostrarNotificacao('Erro ao cancelar reserva.', 3000); // Usei sua função mostrarNotificacao
+    }
   }
-}
 
-async function deletarReservasDoUsuario(emailUsuario) {
-  try {
-    const reservasRef = collection(db, "reservas");
-    const q = query(reservasRef, where("email", "==", emailUsuario));
-    const querySnapshot = await getDocs(q);
+  async function deletarReservasDoUsuario(emailUsuario) {
+    try {
+      const reservasRef = collection(db, "reservas");
+      const q = query(reservasRef, where("email", "==", emailUsuario));
+      const querySnapshot = await getDocs(q);
 
-    console.log(`Encontradas ${querySnapshot.size} reservas para deletar.`);
+      console.log(`Encontradas ${querySnapshot.size} reservas para deletar.`);
 
-    const batch = writeBatch(db);
+      // Corrigido: Firestore v9 usa writeBatch() como uma função importada, não um método do db.
+      const batch = writeBatch(db); // 'db' é o seu objeto Firestore inicializado
 
-    querySnapshot.forEach(doc => {
-      batch.delete(doc.ref);
+      querySnapshot.forEach(docRef => { // Renomeado 'doc' para 'docRef' para clareza
+        batch.delete(docRef.ref);
+      });
+
+      await batch.commit();
+      console.log('Todas as reservas do usuário foram deletadas.');
+    } catch (error) {
+      console.error('Erro ao deletar reservas:', error);
+      // Adicione uma notificação para o usuário, se desejar
+      // mostrarNotificacao('Erro ao deletar reservas associadas.', 3000);
+    }
+  }
+
+  // Botão deletar a conta (listener)
+  // A variável 'btnDeletar' já foi definida no topo do DOMContentLoaded
+  if (btnDeletar) { // Boa prática verificar se o elemento existe
+      btnDeletar.addEventListener('click', () => {
+      if (!usuarioLogado) {
+        mostrarNotificacao("Nenhum usuário logado para deletar.");
+        return;
+      }
+      const confirmar = confirm('Tem certeza que deseja deletar sua conta? Todas as suas reservas também serão removidas. Esta ação é irreversível!');
+      if (confirmar) {
+        deletarConta();
+      }
     });
-
-    await batch.commit();
-
-    console.log('Todas as reservas do usuário foram deletadas.');
-  } catch (error) {
-    console.error('Erro ao deletar reservas:', error);
+  } else {
+      console.error("Botão 'btnDeletar' não foi encontrado no DOM.");
   }
-}
-
-//botão deletar a conta
-
-const btnDeletar = document.getElementById('btnDeletar');
-
-btnDeletar.addEventListener('click', () => {
-  const confirmar = confirm('Tem certeza que deseja deletar sua conta? Esta ação é irreversível!');
-  if (confirmar) {
-    deletarConta();
-  }
-});
 
 async function deletarConta() {
   const user = auth.currentUser;
 
   if (user) {
     try {
-      // (Opcional) Deletar as reservas do usuário antes:
+      // 1. Tenta deletar as reservas do usuário primeiro.
+      // Esta operação geralmente não exige reautenticação recente.
       await deletarReservasDoUsuario(user.email);
 
-      // Deleta o usuário da autenticação:
+      // 2. Tenta deletar a conta do usuário.
       await deleteUser(user);
-
-      alert('Conta deletada com sucesso!');
+      mostrarNotificacao('Conta deletada com sucesso!', 3000);
       console.log('Usuário deletado.');
+      if (perfilModal) perfilModal.style.display = 'none'; // Fecha o modal do perfil
 
-      // Redirecionar ou atualizar a interface:
-      window.location.href = '/login.html';  // ou qualquer página apropriada
     } catch (error) {
       console.error('Erro ao deletar conta:', error);
-      alert('Erro ao deletar conta. Faça login novamente e tente de novo.');
+
+      if (error.code === 'auth/requires-recent-login') {
+        mostrarNotificacao('Para sua segurança, por favor, confirme sua senha para deletar a conta.', 4000);
+        
+        // Pede a senha ao usuário (você pode substituir por um modal mais elegante depois)
+        const senha = prompt("Por favor, insira sua senha para confirmar a exclusão da conta:");
+
+        if (senha) { // Se o usuário inseriu uma senha e não clicou em "Cancelar" no prompt
+          try {
+            // Cria a credencial para reautenticação
+            const credential = EmailAuthProvider.credential(user.email, senha);
+            
+            // Tenta reautenticar o usuário
+            await reauthenticateWithCredential(user, credential);
+            
+            // Reautenticação bem-sucedida!
+            // Agora, tente deletar o usuário novamente.
+            // As reservas já foram deletadas na primeira tentativa do bloco 'try' principal.
+            await deleteUser(user);
+            mostrarNotificacao('Conta deletada com sucesso após reautenticação!', 3000);
+            console.log('Usuário deletado após reautenticação.');
+            if (perfilModal) perfilModal.style.display = 'none';
+
+          } catch (reauthError) {
+            console.error('Erro na reautenticação ou na segunda tentativa de deletar:', reauthError);
+            let msgErroReauth = 'Falha ao reautenticar.';
+            if (reauthError.code === 'auth/wrong-password') {
+              msgErroReauth = 'Senha incorreta. A conta não foi deletada.';
+            } else if (reauthError.code === 'auth/user-mismatch') {
+              msgErroReauth = 'Erro de credencial. A conta não foi deletada.';
+            } else if (reauthError.code === 'auth/too-many-requests') {
+                msgErroReauth = 'Muitas tentativas. Tente novamente mais tarde.';
+            } else {
+              msgErroReauth = 'Não foi possível confirmar sua identidade. A conta não foi deletada.';
+            }
+            mostrarNotificacao(msgErroReauth, 5000);
+          }
+        } else {
+          // Usuário cancelou o prompt de senha
+          mostrarNotificacao('Exclusão da conta cancelada. Senha não fornecida.', 3000);
+        }
+      } else {
+        // Outros erros que não são 'auth/requires-recent-login'
+        mostrarNotificacao('Erro ao deletar conta: ' + error.message, 5000);
+      }
     }
   } else {
-    alert('Nenhum usuário autenticado.');
+    mostrarNotificacao('Nenhum usuário autenticado para deletar.', 3000);
   }
 }
 
-/* Botão de deletar conta;
-  btnDeletarConta.addEventListener('click', async () => await deleteAccount());
-
-  async function carregarReservas() {
-    if (!usuarioLogado) return;
-    listaReservas.innerHTML = '';
-
-    try {
-      const q = query(collection(db, "reservas"), where("uid", "==", usuarioLogado.uid));
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        listaReservas.innerHTML = "<p>Você ainda não fez nenhuma reserva.</p>";
-        return;
-      }
-
-      // Preencher a lista de reservas no perfil
-      querySnapshot.forEach(docItem => {
-        const reserva = docItem.data();
-        const div = document.createElement('div');
-        div.classList.add('reserva-item');
-        div.setAttribute('data-id', docItem.id);
-        div.innerHTML = `
-          <p><strong>Serviço:</strong> ${reserva.servico}</p>
-          <p><strong>Data:</strong> ${reserva.data} - <strong>Horário:</strong> ${reserva.horario}</p>
-          <button class="cancelarReserva" data-id="${docItem.id}">Cancelar</button>
-        `;
-        listaReservas.appendChild(div);
-      });
-
-      // Adicionar evento de cancelamento para cada reserva
-      document.querySelectorAll('.cancelarReserva').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          const id = e.target.getAttribute('data-id');
-          if (!confirm("Tem certeza que deseja cancelar esta reserva?")) return;
-
-          try {
-            await deleteDoc(doc(db, "reservas", id));
-            mostrarNotificacao("Reserva cancelada com sucesso.");
-            document.querySelector(`[data-id="${id}"]`).remove();
-          } catch (error) {
-            mostrarNotificacao("Erro ao cancelar a reserva. Tente novamente.");
-          }
-        });
-      });
-    } catch (error) {
-      mostrarNotificacao("Erro ao carregar suas reservas.");
-    }
-  }
-
-  window.deleteAccount = async function() {
-    const user = auth.currentUser;
-    if (user && confirm('Tem certeza que deseja deletar sua conta?')) {
-      try {
-        await deleteDoc(doc(db, 'usuarios', user.uid));
-        await deleteUser(user);
-        alert('Conta deletada com sucesso!');
-        window.location.reload();
-      } catch (error) {
-        alert('Erro ao deletar a conta: ' + error.message);
-      }
-    }
-  };
-  */
-
   // Verifica se o usuário está logado
   // e atualiza a interface de acordo
-  onAuthStateChanged(auth, (user) => {
-    usuarioLogado = user;
-    btnEntrar.style.display = user ? 'none' : 'inline-block';
-    btnCriarConta.style.display = user ? 'none' : 'inline-block';
-    btnSair.style.display = user ? 'inline-block' : 'none';
-    perfil.style.display = user ? 'inline-block' : 'none';
-    if (!user) listaReservas.innerHTML = '';
-    if (user) carregarReservas();
+ onAuthStateChanged(auth, (user) => {
+    usuarioLogado = user; // Atualiza a variável global com o estado do usuário
+
+    // Atualiza a visibilidade dos botões de login/logout e perfil
+    if (btnEntrar) btnEntrar.style.display = user ? 'none' : 'inline-block';
+    if (btnCriarConta) btnCriarConta.style.display = user ? 'none' : 'inline-block';
+    if (btnSair) btnSair.style.display = user ? 'inline-block' : 'none';
+    if (perfil) perfil.style.display = user ? 'inline-block' : 'none';
+
+    if (!user) {
+      // Se o usuário deslogou
+      if (perfilModal) perfilModal.style.display = 'none'; // Esconde o modal de perfil
+      if (areaReservas) {
+        areaReservas.innerHTML = ''; // Limpa a área de reservas
+        areaReservas.classList.add('hidden'); // Garante que está escondida
+      }
+    } else {
+      // Se o usuário está logado o email será atualizado ao abrir o modal de perfil
+       }
   });
 
+  // Adiciona evento de clique para abrir o modal de login
   btnEntrar.addEventListener('click', () => {
     modalLogin.style.display = 'flex';
     modalCadastro.style.display = 'none';
