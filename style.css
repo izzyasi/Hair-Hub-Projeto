@@ -1,11 +1,26 @@
- :root {
-  --laranja: #f36f21;
-  --laranja-escuro: #c4550e;
-  --cinza-fundo: #f4f4f4;
-  --cinza-escuro: #333;
-  --cinza-claro: #777;
-  --fundo-card: white;
-  --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.1);
+:root {
+  /* Cores principais baseadas no banner e logo */
+  --cor-primaria-escura: #2b2a2a; /* Marrom bem escuro, similar ao fundo do banner */
+  --cor-destaque-cobre: #b0703c;  /* Laranja/cobre da logo e texto do banner */
+  --cor-destaque-cobre-hover: #c88754; /* Um tom levemente mais claro para hover */
+  --cor-texto-claro: #e0ddd7;     /* Bege/Cinza muito claro para textos sobre fundos escuros */
+  --cor-texto-secundario-claro: #b5b1a9; /* Para textos menos importantes, ainda claro */
+
+  /* Cores neutras e de fundo */
+  --cor-fundo-principal: #33302f; /* Você já usa este, é um bom tom */
+  --cor-fundo-secoes: #353334;  /* Você já usa este, bom para cards e seções internas */
+  --cor-fundo-sutilmente-mais-claro: #3f3d3c; /* Para variações sutis ou fundos de input */
+
+  /* Outras cores (revisar ou manter se necessário) */
+  --cinza-escuro: #333; /* Usado para texto em fundos claros - menos relevante no tema escuro */
+  --cinza-claro: #777;  /* Manter para textos de rodapé ou menos importantes se precisar */
+  --fundo-card-original: white; /* Guardar referência, mas vamos evitar no tema escuro */
+  --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.25); /* Sombra um pouco mais escura para fundos escuros */
+
+  /* Cores antigas para referência (depois você pode remover) */
+  /* --laranja: #f36f21; */
+  /* --laranja-escuro: #c4550e; */
+  /* --cinza-fundo: #f4f4f4; */
 }
 
 /* geral*/
