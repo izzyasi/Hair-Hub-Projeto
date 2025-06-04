@@ -10,12 +10,12 @@
   <div class="container">
     <header>
       <div class="branding">
-      <img src="imagens/logo.png" alt="Hair Hub Logo" class="logo">
+      <img src="imagens/iconehairhub.png" alt="Hair Hub Logo" class="logo">
         <h1>Hair Hub</h1>
         </div>
       <nav class="menu">
         <a href="#sobre">Sobre Nós</a>
-        <a href="#servicos">Serviços</a>
+        <!--<a href="#servicos">Serviços</a>-->
         <a href="#avaliacoes">Avaliações</a>
         <a href="#contato">Contato</a>
         <button id="btnEntrar">Entrar</button>
@@ -29,10 +29,15 @@
   </div>
     </header>
 <main>
+  <div id="notificacaoEmailNaoVerificado" class="notificacao-verificacao" style="display:none; background-color: #fff3cd; color: #856404; padding: 10px; margin-bottom: 15px; border: 1px solid #ffeeba; border-radius: 4px; text-align: center;">
+    </div>
     <section class="hero">
-      <div style="text-align: center; margin: 20px 0;">
-    <img src="imagens\banner.jpeg" alt="Hair Hub - Barbearia" style="max-width: 100%; height: auto;">
-     </div>
+      <section class="hero-com-botao">
+  <div class="banner-interativo-container">
+    <section id="servicos" class="section">
+    <div style="text-align: center; margin-bottom: 20px;">
+    <button id="btnAbrirModalServicos" class="btn-principal">Agendar agora</button> </div>
+  </div>
     </section>
     <section id="sobre" class="sobre-nos">
   <div class="container">
@@ -50,63 +55,63 @@
     </div>
   </div>
 </section>
-    <section id="servicos" class="section">
-      <h3>Nossos Serviços</h3>
-      <div class="services">
-        <div class="card">
-          <img src="imagens/corte.jpg" alt="Corte" />
-          <h4>Corte de Cabelo - R$55</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Corte de Cabelo - R$55">Reservar</a>
+
+  <div id="modalSelecionarServicos" class="modal" style="display:none;">
+   <div class="modal-content large"> 
+  <button id="btnFecharModalServicos" class="btn-fechar">×</button>
+  <h2>Selecione os Serviços</h2>
+
+  <div class="area-selecao-servico-atual">
+    <h4>Escolha um serviço:</h4>
+    
+    <div class="campo-selecao">
+      <label for="dropdownServicoPrincipal">Serviço:</label>
+      <select id="dropdownServicoPrincipal">
+        <option value="">-- Selecione --</option>
+        </select>
+    </div>
+
+    <div class="campo-selecao" id="containerTipoVariante" style="display:none;">
+      <label for="dropdownTipoVariante">Tipo:</label>
+      <select id="dropdownTipoVariante">
+        </select>
+    </div>
+
+    <div class="campo-selecao" id="containerSubVariante" style="display:none;">
+      <label for="dropdownSubVariante">Detalhe:</label> 
+      <select id="dropdownSubVariante">
+        </select>
+    </div>
+    
+    <div id="infoServicoAtual" style="margin-top:10px; font-weight:bold;">
         </div>
-        <div class="card">
-          <img src="imagens/luzes.jpg" alt="Luzes" />
-          <h4>Luzes - R$120</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Luzes - R$120">Reservar</a>
-        </div>
-        <div class="card">
-          <img src="imagens/coloracao.jpg" alt="Coloração" />
-          <h4>Coloração - R$90</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Coloração - R$90">Reservar</a>
-        </div>
-        <div class="card">
-          <img src="imagens/barba.jpg" alt="Barba" />
-          <h4>Barba - R$45</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Barba - R$45">Reservar</a>
-        </div>
-        <div class="card">
-          <img src="imagens/pezinho.jpg" alt="Pézinho" />
-          <h4>Pézinho - R$25</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Pézinho - R$25">Reservar</a>
-        </div>
-        <div class="card">
-          <img src="imagens/sobrancelha.jpg" alt="Sobrancelha" />
-          <h4>Sobrancelha - R$25</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Sobrancelha - R$25">Reservar</a>
-        </div>
-        <div class="card">
-          <img src="imagens/massagemcapilar.jpg" alt="Massagem" />
-          <h4>Massagem capilar - R$30</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Massagem Capilar - R$30">Reservar</a>
-        </div>
-        <div class="card">
-          <img src="imagens/hidratacao.jpg" alt="Hidratação" />
-          <h4> Hidratação - R$40</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Hidratação - R$40">Reservar</a>
-        </div>
-        <div class="card">
-          <img src="imagens/progressiva.jpg" alt="Progressiva" />
-          <h4>Progressiva - R$70</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Progressiva - R$70">Reservar</a>
-        </div>
-        <div class="card">
-          <img src="imagens/permanentecacheado.jpg" alt="Permanente" />
-          <h4>Permanente Cacheado - R$95</h4>
-          <a class="btn reservar-btn" href="#" data-servico="Permanente Cacheado - R$95">Reservar</a>
-        </div>
-      </div>
-    </section>
+    <button id="btnAdicionarServicoAtual" class="modal-button-primary" style="margin-top:10px;">Adicionar este Serviço</button>
+  </div>
+
+  <hr style="margin: 20px 0;">
+
+  <div class="area-servicos-adicionados">
+    <h4>Serviços Escolhidos para Agendamento:</h4>
+    <ul id="listaServicosJaAdicionados">
+      </ul>
+    <button id="btnMostrarSelecaoNovoServico" class="modal-button-secondary" style="margin-top:10px;">+ Adicionar Outro Serviço</button>
+  </div>
+
+  <hr style="margin: 20px 0;">
+
+  <div id="resumo-agendamento-modal-servicos"> <p><strong>Total Estimado:</strong> 
+      Preço: <span id="preco-total-modal-servicos">R$ 0</span> | 
+      Duração: <span id="duracao-total-modal-servicos">0 min</span>
+    </p>
+    <button id="btnProsseguirReservaNoModalServicos" class="modal-button-primary">Prosseguir para Reserva de Horário</button>
+  </div>
+    <div id="containerListaServicosModal">
+    </div>
+   </div>
+  </div>
 
     <section id="avaliacoes" class="section">
+      <div class="container">
       <h3>Últimas Avaliações</h3>
       <div class="reviews">
         <div class="review">
@@ -125,10 +130,11 @@
           <span>Lucas Andrade - ★★★★★</span>
         </div>
       </div>
+      </div>
     </section>
   </div>
   <div id="modalLogin" class="modal" style="display:none;">
-    <div class="modal-content">
+    <div class="modal-content modal-content-sm">
       <button id="btnFecharLogin" class="btn-fechar">&times;</button>
       <h2>Entrar</h2>
       <form id="formLogin">
@@ -140,7 +146,7 @@
     </div>
   </div>
   <div id="modalCadastro" class="modal" style="display:none;">
-    <div class="modal-content">
+    <div class="modal-content modal-content-sm">
       <button id="btnFecharCadastro" class="btn-fechar">&times;</button>
       <h2>Criar Conta</h2>
       <form id="formCadastro">
@@ -155,28 +161,29 @@
 
   <div id="reservaModal" class="modal" style="display: none;">
     <div class="modal-content">
-      <button class="btn-fechar close">&times;</button>
-      <h2>Reservar Horário</h2>
-      <p id="servicoSelecionado" style="font-weight: bold; font-size: 1.2em; margin-bottom: 10px;"></p>
-      <label for="data">Escolha o dia:</label>
-      <input type="date" id="data" />
+    <button class="btn-fechar close">×</button> <h2>Reservar Horário</h2>
 
-      <label for="horario">Escolha o horário:</label>
-      <select id="horario"></select>
+    <div id="resumoServicosModal" style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; font-size: 0.9em;">
+      </div>
 
-      <button id="confirmarReserva">Confirmar Reserva</button>
+    <label for="dataReserva">Escolha o dia:</label>
+    <input type="date" id="dataReserva" /> <label for="horarioReserva">Escolha o horário:</label>
+    <select id="horarioReserva"></select> <label for="observacoesReservaModal">Observações (opcional):</label>
+    <textarea id="observacoesReservaModal" placeholder="Ex: Tenho alergia a certo produto..." style="width: 95%; min-height: 60px; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+
+    <button id="btnConfirmarReservaModal" class="modal-button-primary">Confirmar Reserva</button> </div>
     </div>
   </div>
   <div class="profile-menu" id="profileMenu">
     <p id="userEmail"></p>
 </div>
   <div id="perfilModal" class="modal" style="display:none;">
-  <div class="modal-content">
+  <div class="modal-content modal-content-sm">
     <button class="btn-fechar closePerfil">x</button>
     <div class="abaPerfil">  <h2>Perfil</h2>
       <p>Email: <span id="emailUsuario"></span></p>
-    <button id="btnReservas">Reservas</button>
-    <button id="btnDeletar">Deletar Conta</button>
+    <button id="btnReservas" class="modal-button-secondary">Reservas</button>
+    <button id="btnDeletar" class="modal-button-danger">Deletar Conta</button>
     <div id="areaReservas" class="hidden"></div>
     </div>
   </div>
@@ -185,7 +192,6 @@
 <section id="contato" class="contato">
   <div class="container">
     <h2>Contato</h2>
-    
     <p>Onde nossa barbearia está localizada:</p>
     <div class="contato-conteudo">
       <!-- Mapa -->
