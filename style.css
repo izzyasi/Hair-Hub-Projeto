@@ -145,15 +145,6 @@ nav a:hover {
 
 /* Sobre nós seção */
 
-/*.hero {
-  background: #F5F5DC;
-  color: white;
-  padding: 40px;
-  text-align: center;
-  border-radius: 12px;
-  margin-bottom: 40px;
-}*/
-
 
 #btnMostrarSelecaoNovoServico {
   display: none !important; 
@@ -195,27 +186,27 @@ nav a:hover {
 
 .sobre-nos {
   padding: 80px 20px;
-  font-family: 'Georgia', serif;
-  color: #36454F;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.sobre-nos .container {
-  display: flex;
-  width: 920px;
-  margin: 50px auto;
-  margin-top: 1px;
-  margin-bottom: 0;
-  padding: 20px;
+section#sobre.sobre-nos {
+  margin-top: 60px;
+  background-color: #F8F8F8; 
+  border: 1px solid #36454F;  
   border-radius: 20px;
-  border: 1px solid #36454F;
-  background-color: #F5F5DC;
+  padding: 40px 30px;         
+  display: flex;
+  align-items: center;
+  gap: 30px;                 
+  margin-bottom: 40px;         
 }
 
 .sobre-nos h2 {
-  font-size: 2.3rem;
+  font-family: 'Playfair Display', serif;
+  font-style: bold;
+  font-size: 2.6rem;
   margin-bottom: 20px;
   position: relative;
   display: inline-block;
@@ -341,26 +332,35 @@ nav a:hover {
 
 /* Seção avaliações */
 
-#avaliacoes h3 { 
-  color: #F8F8F8;
-  font-family: 'Georgia';
-  margin-bottom: 20px;
+section#avaliacoes {
+  padding: 0;          
+  margin-bottom: 5px;         
 }
 
+
+section#avaliacoes h3 {
+  color: #F8F8F8;  
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 20px;
+  margin-top: 60px; 
+  text-align: left;  
+  font-size: 2.0em;    
+}
 
 .reviews {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
+  align-items: center;  
+  gap: 20px;         
   width: 100%;
-  gap: 15px;          
 }
 
 .review {
-  background: #F5F5DC;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: var(--sombra-suave);
-  width: 100%;
+  background: #F5F5DC;         
+  padding: 20px 25px;         
+  border-radius: 10px;         
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+  width: 100%;                  /* Largura do cartão (ex: 90% do container) */           
 }
 
 .review p {
@@ -377,7 +377,12 @@ nav a:hover {
 
 .review span {
   font-weight: bold;
-  color: var(--laranja);
+  color: #141311;
+}
+
+.review span1 {
+  font-weight: bold;
+  color: #f8a601;
 }
 
 /* Seção modais */
@@ -671,7 +676,7 @@ nav a:hover {
 /* Seção contato e local */
 
 .contato h2 {
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   margin-bottom: 20px;
   color: #F8F8F8;
 }
@@ -690,7 +695,7 @@ nav a:hover {
 }
 
 .contato .container {
-  max-width: 1000px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
